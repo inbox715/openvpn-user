@@ -31,7 +31,6 @@ class PINK(object):
             session.write(b"status\n")
             info = session.read_until(b"END").decode("utf-8")
 
-        print(info)
         return info
 
 c_dir = os.path.dirname(os.path.abspath(__file__)) + '/'
