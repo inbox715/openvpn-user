@@ -55,11 +55,11 @@ class PINK(object):
     def index(self,**param):
 
         table_sample = """<table class="table table-sm table-dark">
-        
+
+        <button type="button" class="btn btn-dark rounded-0">%server%</button>
+
+
             <thead>
-                <tr>
-                    <th scope="col">%server%</th>
-                </tr>
 
                 <tr>
                 <th scope="col">#</th>
@@ -92,38 +92,41 @@ class PINK(object):
                 user_list = user_list.split("\r\nROUTING TABLE")[0]
                 user_list = user_list.split("\r\n")
 
-                name_list=[]
-                address_list=[]
-                download_list=[]
-                upload_list=[]
-                connect_time_list=[]
+                if user_list[0]=='ROUTING TABLE': #for detect no user
+                    tables.append('<div class="alert alert-warning" role="alert"> no user '+server+' </div>')
+                else:
+                    name_list=[]
+                    address_list=[]
+                    download_list=[]
+                    upload_list=[]
+                    connect_time_list=[]
 
-                for user in user_list:
-                    user_parameter = user.split(",")
-                    name_list.append(user_parameter[0])
-                    address_list.append(user_parameter[1])
-                    download_list.append(convert_size(user_parameter[2]))
-                    upload_list.append(convert_size(user_parameter[3]))
+                    for user in user_list:
+                        user_parameter = user.split(",")
+                        name_list.append(user_parameter[0])
+                        address_list.append(user_parameter[1])
+                        upload_list.append(convert_size(user_parameter[2]))
+                        download_list.append(convert_size(user_parameter[3]))
 
-                    fmt = '%a %b %d %H:%M:%S %Y'
-                    now_time = datetime.now()
-                    d1 = datetime.strptime(user_parameter[4], fmt)
-                    d2 = datetime.strptime(now_time.strftime(fmt), fmt)
-                    connect_time_list.append(str((d2-d1)))
+                        fmt = '%a %b %d %H:%M:%S %Y'
+                        now_time = datetime.now()
+                        d1 = datetime.strptime(user_parameter[4], fmt)
+                        d2 = datetime.strptime(now_time.strftime(fmt), fmt)
+                        connect_time_list.append(str((d2-d1)))
 
 
-                name_table=''
-                for table_row in range(len(name_list)):
-                    name_table=name_table+'<tr><th scope="row">'+str(table_row+1)+'</th>'
-                    name_table=name_table+"<td>"+name_list[table_row]+"</td>"
-                    name_table=name_table+"<td>"+address_list[table_row]+"</td>"
-                    name_table=name_table+"<td>"+download_list[table_row]+"</td>"
-                    name_table=name_table+"<td>"+upload_list[table_row]+"</td>"
-                    name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
-                    name_table=name_table+'</tr>'
+                    name_table=''
+                    for table_row in range(len(name_list)):
+                        name_table=name_table+'<tr><th scope="row">'+str(table_row+1)+'</th>'
+                        name_table=name_table+"<td>"+name_list[table_row]+"</td>"
+                        name_table=name_table+"<td>"+address_list[table_row]+"</td>"
+                        name_table=name_table+"<td>"+download_list[table_row]+"</td>"
+                        name_table=name_table+"<td>"+upload_list[table_row]+"</td>"
+                        name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
+                        name_table=name_table+'</tr>'
 
-                table_sample=table_sample.replace("%server%", server)
-                tables.append(table_sample.replace("%info%", name_table))
+                    table_temp=table_sample.replace("%server%", server)
+                    tables.append(table_temp.replace("%info%", name_table))
             except :
 
                 tables.append('<div class="alert alert-danger" role="alert"> Error in '+server+'</div>')
