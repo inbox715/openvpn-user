@@ -55,7 +55,12 @@ class PINK(object):
     def index(self,**param):
 
         table_sample = """<table class="table table-sm table-dark">
+        
             <thead>
+                <tr>
+                    <th scope="col">%server%</th>
+                </tr>
+
                 <tr>
                 <th scope="col">#</th>
                 <th scope="col">name</th>
@@ -117,6 +122,7 @@ class PINK(object):
                     name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
                     name_table=name_table+'</tr>'
 
+                table_sample=table_sample.replace("%server%", server)
                 tables.append(table_sample.replace("%info%", name_table))
             except :
 
