@@ -10,7 +10,7 @@ sudo apt install git
 
 
 sudo rm -rf openvpn-user
-git clone https://github.com/inbox715/openvpn-user 
+git clone https://github.com/inbox715/openvpn-user-list-multiserver.git
 
 
 sudo ufw allow 31221
