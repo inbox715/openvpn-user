@@ -13,8 +13,8 @@ sudo rm -rf openvpn-user
 git clone https://github.com/inbox715/openvpn-user 
 
 
-allow ufw allow 31221
-allow ufw allow 31222
+sudo ufw allow 31221
+sudo ufw allow 31222
 
 
 python3 ./openvpn-user/user.py &
