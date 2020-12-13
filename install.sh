@@ -9,7 +9,7 @@ sudo apt install git
 
 
 
-sudo rm -rf openvpn-user
+sudo rm -rf openvpn-user-list-multiserver
 git clone https://github.com/inbox715/openvpn-user-list-multiserver.git
 
 
@@ -17,6 +17,6 @@ sudo ufw allow 31221
 sudo ufw allow 31222
 
 
-python3 ./openvpn-user/user.py &
-python3 ./openvpn-user/server.py &
+python3 ./openvpn-user-list-multiserver/user.py &
+python3 ./openvpn-user-list-multiserver/server.py &
 
