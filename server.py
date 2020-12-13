@@ -70,6 +70,9 @@ class PINK(object):
         tables=[]
         page = open(c_dir+"index.html").read()
 
+        if len (param) == 0:
+            return "hi boss"
+
 
         servers= param['sub'].split(",")
         for server in servers:
