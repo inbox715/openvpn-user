@@ -73,46 +73,55 @@ class PINK(object):
 
         servers= param['sub'].split(",")
         for server in servers:
-            url = 'http://'+server+":31221"
-            data = requests.get(url).text
-
-            user_list = data
-            user_list = user_list.split("Connected Since\r\n")[1]
-            user_list = user_list.split("\r\nROUTING TABLE")[0]
-            user_list = user_list.split("\r\n")
-
-            name_list=[]
-            address_list=[]
-            download_list=[]
-            upload_list=[]
-            connect_time_list=[]
-
-            for user in user_list:
-                user_parameter = user.split(",")
-                name_list.append(user_parameter[0])
-                address_list.append(user_parameter[1])
-                download_list.append(convert_size(user_parameter[2]))
-                upload_list.append(convert_size(user_parameter[3]))
-
-                fmt = '%a %b %d %H:%M:%S %Y'
-                now_time = datetime.now()
-                d1 = datetime.strptime(user_parameter[4], fmt)
-                d2 = datetime.strptime(now_time.strftime(fmt), fmt)
-                connect_time_list.append(str((d2-d1)))
+            try:
+                url = 'http://'+server+":31221"
+                data = requests.get(url,timeout=5).text
 
 
-            name_table=''
-            for table_row in range(len(name_list)):
-                name_table=name_table+'<tr><th scope="row">'+str(table_row+1)+'</th>'
-                name_table=name_table+"<td>"+name_list[table_row]+"</td>"
-                name_table=name_table+"<td>"+address_list[table_row]+"</td>"
-                name_table=name_table+"<td>"+download_list[table_row]+"</td>"
-                name_table=name_table+"<td>"+upload_list[table_row]+"</td>"
-                name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
-                name_table=name_table+'</tr>'
+
+                user_list = data
+                user_list = user_list.split("Connected Since\r\n")[1]
+                user_list = user_list.split("\r\nROUTING TABLE")[0]
+                user_list = user_list.split("\r\n")
+
+                name_list=[]
+                address_list=[]
+                download_list=[]
+                upload_list=[]
+                connect_time_list=[]
+
+                for user in user_list:
+                    user_parameter = user.split(",")
+                    name_list.append(user_parameter[0])
+                    address_list.append(user_parameter[1])
+                    download_list.append(convert_size(user_parameter[2]))
+                    upload_list.append(convert_size(user_parameter[3]))
+
+                    fmt = '%a %b %d %H:%M:%S %Y'
+                    now_time = datetime.now()
+                    d1 = datetime.strptime(user_parameter[4], fmt)
+                    d2 = datetime.strptime(now_time.strftime(fmt), fmt)
+                    connect_time_list.append(str((d2-d1)))
 
 
-            tables.append(table_sample.replace("%info%", name_table))
+                name_table=''
+                for table_row in range(len(name_list)):
+                    name_table=name_table+'<tr><th scope="row">'+str(table_row+1)+'</th>'
+                    name_table=name_table+"<td>"+name_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+address_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+download_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+upload_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
+                    name_table=name_table+'</tr>'
+
+                tables.append(table_sample.replace("%info%", name_table))
+            except :
+
+                tables.append('<div class="alert alert-danger" role="alert"> Error in '+server+'</div>')
+
+
+                
+
                 
 
         
