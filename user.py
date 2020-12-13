@@ -23,6 +23,7 @@ class PINK(object):
     @cherrypy.expose
     def index(self):
 
+
         host = "127.0.0.1" # set in open vpn config file
         port = 5555 # set in open vpn config file
         timeout = 100
@@ -30,19 +31,19 @@ class PINK(object):
             session.write(b"status\n")
             info = session.read_until(b"END").decode("utf-8")
 
+        print(info)
         return info
 
+c_dir = os.path.dirname(os.path.abspath(__file__)) + '/'
 
-
-cwd = os.getcwd()
 conf = {
     '/': {
         'tools.sessions.on': True,
-        'tools.staticdir.root': cwd
+        'tools.staticdir.root': c_dir
     },
     '/static': {
         'tools.staticdir.on': True,
-        'tools.staticdir.dir': './static'
+        'tools.staticdir.dir':'./static'
     }
 }
 

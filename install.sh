@@ -5,5 +5,8 @@ echo "try install cherrypy"
 sudo apt install python3-pip
 sudo pip3 install cherrypy
 
+sudo apt install git
 
+
+sudo rm -rf openvpn-user
 git clone https://github.com/inbox715/openvpn-user 
