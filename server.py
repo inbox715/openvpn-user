@@ -93,7 +93,14 @@ class PINK(object):
                 user_list = user_list.split("\r\n")
 
                 if user_list[0]=='ROUTING TABLE': #for detect no user
-                    tables.append('<div class="alert alert-warning" role="alert"> no user '+server+' </div>')
+                    table_temp=table_sample.replace("%server%", server)
+
+                    tables.append('''
+                    <table class="table table-sm table-dark">
+                    <div class="alert alert-warning" role="alert"> no user '''+server+''' </div>
+                    <tbody>
+                    ''')
+
                 else:
                     name_list=[]
                     address_list=[]
