@@ -8,8 +8,12 @@ sudo pip3 install cherrypy
 sudo apt install git
 
 
+
 sudo rm -rf openvpn-user
 git clone https://github.com/inbox715/openvpn-user 
+
+
+
 
 python3 ./openvpn-user/user.py &
 python3 ./openvpn-user/server.py &
