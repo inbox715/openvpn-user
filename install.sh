@@ -3,12 +3,12 @@ echo "This is a shell script"
 echo "try install cherrypy"
 
 
-sudo apt install net-tools
+sudo apt -y install net-tools
 
-sudo apt install python3-pip
+sudo apt -y install python3-pip
 sudo pip3 install cherrypy
 
-sudo apt install git
+sudo apt -y install git
 
 
 
