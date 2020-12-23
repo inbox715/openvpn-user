@@ -127,7 +127,7 @@ class PINKO(object):
 
         info=""
         for ip in ip_list:
-            if ip[1] >0 :
+            if ip[1] > 10000000 :
                 info = info+'''<tr>
                                 <td>'''+str(ip[0])+'''</td>
                                 <td>'''+str(convert_size(ip[1]))+'''</td>
