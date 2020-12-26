@@ -11,5 +11,5 @@ chmod +x install.sh
 
 #only if need monitor bandwidth
 
-python3 ./openvpn-user-list-multiserver/ip_monitor.py
+python3 ./openvpn-user-list-multiserver/ip_monitor.py&
 
