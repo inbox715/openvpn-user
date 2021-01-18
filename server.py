@@ -176,7 +176,7 @@ class PINK(object):
             html_table=''
             for table in error_list:
                 html_table=html_table+table+"<br>"
-                page=page.replace("%tables%", html_table)
+            page=page.replace("%tables%", html_table)
             if error_list.__len__() == 0:
                 page=page.replace("%tables%", "")
 
