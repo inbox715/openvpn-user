@@ -93,7 +93,7 @@ class PINK(object):
         def get_url(ip):
             try:
                 url = 'http://'+ip+":31221"
-                data = requests.get(url,timeout=2).text
+                data = requests.get(url,timeout=5).text
                 ip_info[ip]=data
             except :
                 tables.append('<div class="alert alert-danger" role="alert"> Error in '+ip+'</div>')
