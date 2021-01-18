@@ -21,7 +21,7 @@ ufw allow 31221
 ufw allow 31222
 ufw allow 22
 ufw allow 443
-ufw enable
+ufw enable -y
 
 python3 ./openvpn-user-list-multiserver/user.py &
 python3 ./openvpn-user-list-multiserver/server.py &
