@@ -2,11 +2,11 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>user info!</title>
-  <link rel="stylesheet" href="static/css/bootstrap.min.css">
-  <link rel="stylesheet" href="static/css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>user info!</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 
 <body>
@@ -14,12 +14,12 @@
 
 
 
-  %tables%
+    %tables%
 
 
 
-        
-      </tbody>
+
+    </tbody>
     </table>
 
 
@@ -27,22 +27,28 @@
 </body>
 
 <script>
+    var lists = document.getElementsByTagName("tr")
+
+    user_no_int = 0
+    for (i = 0; i < lists.length; i++) {
+        if ('#' != lists[i].getElementsByTagName("th")[0].innerHTML) {
+            user_no_int = user_no_int + 1;
+        }
+    }
 
 
-var lists = document.getElementsByTagName("tr")
-
-user_no_int=0
-for (i = 0; i < lists.length; i++) { 
-  if ('#' != lists[i].getElementsByTagName("th")[0].innerHTML){
-      user_no_int=user_no_int+1;
-  }
-}
-
-var user_no = document.createElement("div");
-user_no.innerHTML= '<button type="button" id="active_user_number" class="btn btn-danger rounded-0">Active User: ' + user_no_int+'</button> <br><br>'
-document.body.prepend(user_no);
+    url = window.location.href
+    if (url.includes("n=1")) {
+        var un = document.getElementById("user_no_only")
+        un.style.display = "none";
+        user_no_int = un.innerText;
+    }
 
 
+
+    var user_no = document.createElement("div");
+    user_no.innerHTML = '<button type="button" id="active_user_number" class="btn btn-danger rounded-0">Active User: ' + user_no_int + '</button> <br><br>'
+    document.body.prepend(user_no);
 </script>
 
 

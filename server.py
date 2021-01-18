@@ -80,78 +80,117 @@ class PINK(object):
 
 
         servers= param['sub'].split(",")
-        for server in servers:
+
+
+
+
+        import threading
+
+
+        ip_info={}
+        error_list=[]
+
+        def get_url(ip):
+            url = 'http://'+server+":31221"
             try:
-                url = 'http://'+server+":31221"
-                data = requests.get(url,timeout=5).text
-
-
-
-                user_list = data
-                user_list = user_list.split("Connected Since\r\n")[1]
-                user_list = user_list.split("\r\nROUTING TABLE")[0]
-                user_list = user_list.split("\r\n")
-
-                if user_list[0]=='ROUTING TABLE': #for detect no user
-                    table_temp=table_sample.replace("%server%", server)
-
-                    tables.append('''
-                    <table class="table table-sm table-dark">
-                    <div class="alert alert-warning" role="alert"> no user '''+server+''' </div>
-                    <tbody>
-                    ''')
-
-                else:
-                    name_list=[]
-                    address_list=[]
-                    download_list=[]
-                    upload_list=[]
-                    connect_time_list=[]
-
-                    for user in user_list:
-                        user_parameter = user.split(",")
-                        name_list.append(user_parameter[0])
-                        address_list.append(user_parameter[1])
-                        upload_list.append(convert_size(user_parameter[2]))
-                        download_list.append(convert_size(user_parameter[3]))
-
-                        fmt = '%a %b %d %H:%M:%S %Y'
-                        now_time = datetime.now()
-                        d1 = datetime.strptime(user_parameter[4], fmt)
-                        d2 = datetime.strptime(now_time.strftime(fmt), fmt)
-                        connect_time_list.append(str((d2-d1)))
-
-
-                    name_table=''
-                    for table_row in range(len(name_list)):
-                        name_table=name_table+'<tr><th scope="row">'+str(table_row+1)+'</th>'
-                        name_table=name_table+"<td>"+name_list[table_row]+"</td>"
-                        name_table=name_table+"<td>"+address_list[table_row]+"</td>"
-                        name_table=name_table+"<td>"+download_list[table_row]+"</td>"
-                        name_table=name_table+"<td>"+upload_list[table_row]+"</td>"
-                        name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
-                        name_table=name_table+'</tr>'
-
-                    table_temp=table_sample.replace("%server%", server)
-                    tables.append(table_temp.replace("%info%", name_table))
+                data = requests.get(url,timeout=2).text
+                ip_info[ip]=data
             except :
-
                 tables.append('<div class="alert alert-danger" role="alert"> Error in '+server+'</div>')
+                error_list.append('<div class="alert alert-danger" role="alert"> Error in '+server+'</div>')
+
+
+        t_list=[]
+        for server in servers:
+            t = threading.Thread(target=get_url, args = (server,))
+            t.start()
+            t_list.append(t)
+
+        for t in t_list:
+            t.join()
+            pass
+
+
+        number_of_user=0
+
+        for data in ip_info:
+            # url = 'http://'+server+":31221"
+            # data = requests.get(url,timeout=5).text
+
+
+
+            user_list = ip_info[data]
+            user_list = user_list.split("Connected Since\r\n")[1]
+            user_list = user_list.split("\r\nROUTING TABLE")[0]
+            user_list = user_list.split("\r\n")
+
+            if user_list[0]=='ROUTING TABLE': #for detect no user
+                table_temp=table_sample.replace("%server%", server)
+
+                tables.append('''
+                <table class="table table-sm table-dark">
+                <div class="alert alert-warning" role="alert"> no user '''+server+''' </div>
+                <tbody>
+                ''')
+
+            else:
+                name_list=[]
+                address_list=[]
+                download_list=[]
+                upload_list=[]
+                connect_time_list=[]
+
+                for user in user_list:
+                    number_of_user = number_of_user + 1
+                    user_parameter = user.split(",")
+                    name_list.append(user_parameter[0])
+                    address_list.append(user_parameter[1])
+                    upload_list.append(convert_size(user_parameter[2]))
+                    download_list.append(convert_size(user_parameter[3]))
+
+                    fmt = '%a %b %d %H:%M:%S %Y'
+                    now_time = datetime.now()
+                    d1 = datetime.strptime(user_parameter[4], fmt)
+                    d2 = datetime.strptime(now_time.strftime(fmt), fmt)
+                    connect_time_list.append(str((d2-d1)))
+
+
+                name_table=''
+                for table_row in range(len(name_list)):
+                    name_table=name_table+'<tr><th scope="row">'+str(table_row+1)+'</th>'
+                    name_table=name_table+"<td>"+name_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+address_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+download_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+upload_list[table_row]+"</td>"
+                    name_table=name_table+"<td>"+connect_time_list[table_row]+"</td>"
+                    name_table=name_table+'</tr>'
+
+                table_temp=table_sample.replace("%server%", server)
+                tables.append(table_temp.replace("%info%", name_table))
+
 
 
                 
 
-                
+        if param['n']=='1':
+            html_table=''
 
-        
-        html_table=''
-        for table in tables:
-            html_table=html_table+table+"<br>"
+            for table in error_list:
+                html_table=html_table+table+"<br>"
+                page=page.replace("%tables%", html_table)
+            if error_list.__len__() == 0:
+                page=page.replace("%tables%", "")
 
-        page=page.replace("%tables%", html_table)
 
+            return  '<p id="user_no_only">' + str (number_of_user) +'</p>' +page       
 
-        return page
+        else:   
+            html_table=''
+            for table in tables:
+                html_table=html_table+table+"<br>"
+            page=page.replace("%tables%", html_table)
+      
+            return page
 
 
 
