@@ -91,13 +91,13 @@ class PINK(object):
         error_list=[]
 
         def get_url(ip):
-            url = 'http://'+server+":31221"
             try:
+                url = 'http://'+ip+":31221"
                 data = requests.get(url,timeout=2).text
                 ip_info[ip]=data
             except :
-                tables.append('<div class="alert alert-danger" role="alert"> Error in '+server+'</div>')
-                error_list.append('<div class="alert alert-danger" role="alert"> Error in '+server+'</div>')
+                tables.append('<div class="alert alert-danger" role="alert"> Error in '+ip+'</div>')
+                error_list.append('<div class="alert alert-danger" role="alert"> Error in '+ip+'</div>')
 
 
         t_list=[]
@@ -108,7 +108,6 @@ class PINK(object):
 
         for t in t_list:
             t.join()
-            pass
 
 
         number_of_user=0
