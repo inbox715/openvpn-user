@@ -172,15 +172,14 @@ class PINK(object):
 
                 
 
-        if param['n']=='1':
-            html_table=''
+        if 'n' in param and param['n']=='1':
 
+            html_table=''
             for table in error_list:
                 html_table=html_table+table+"<br>"
                 page=page.replace("%tables%", html_table)
             if error_list.__len__() == 0:
                 page=page.replace("%tables%", "")
-
 
             return  '<p id="user_no_only">' + str (number_of_user) +'</p>' +page       
 
