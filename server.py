@@ -112,13 +112,13 @@ class PINK(object):
 
         number_of_user=0
 
-        for data in ip_info:
+        for server in ip_info:
             # url = 'http://'+server+":31221"
             # data = requests.get(url,timeout=5).text
 
 
 
-            user_list = ip_info[data]
+            user_list = ip_info[server]
             user_list = user_list.split("Connected Since\r\n")[1]
             user_list = user_list.split("\r\nROUTING TABLE")[0]
             user_list = user_list.split("\r\n")
