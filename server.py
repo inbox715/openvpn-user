@@ -149,8 +149,14 @@ class PINK(object):
 
                     fmt = '%a %b %d %H:%M:%S %Y'
                     now_time = datetime.now()
-                    d1 = datetime.strptime(user_parameter[4], fmt)
-                    d2 = datetime.strptime(now_time.strftime(fmt), fmt)
+                    try:
+                        d1 = datetime.strptime(user_parameter[4], fmt)
+                        d2 = datetime.strptime(now_time.strftime(fmt), fmt)
+                    except:
+                        fmt = '%Y-%m-%d %H:%M:%S'
+                        d1 = datetime.strptime(user_parameter[4], fmt)
+                        d2 = datetime.strptime(now_time.strftime(fmt), fmt)
+
                     connect_time_list.append(str((d2-d1)))
 
 
